@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormMixin, CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from djangoForum.forum.forms import ForumPostForm
+from djangoForum.forum.forms import ForumPostForm, ForumThreadForm
 from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost
 
 
@@ -20,6 +21,20 @@ class ForumCategoryView(ListView):
         category = ForumCategory.objects.get(slug=self.kwargs['slug'])
         object_list = ForumThread.objects.filter(category_id=category.id)
         return object_list
+
+
+class ForumThreadCreate(LoginRequiredMixin, CreateView):
+    form_class = ForumThreadForm
+    template_name = 'forum/thread-create.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.user = self.request.user
+        post.category = ForumCategory.objects.get(slug=self.kwargs['slug'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('category threads', kwargs={'slug': self.kwargs['slug']})
 
 
 class ForumThreadView(CreateView):
@@ -41,3 +56,11 @@ class ForumThreadView(CreateView):
 
     def get_success_url(self):
         return self.request.path
+
+
+class ForumThreadEdit(UpdateView):
+    pass
+
+
+class ForumThreadDelete(DeleteView):
+    pass

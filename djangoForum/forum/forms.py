@@ -1,6 +1,6 @@
 from django import forms
 
-from djangoForum.forum.models import ForumPost
+from djangoForum.forum.models import ForumPost, ForumThread
 
 
 class ForumPostForm(forms.ModelForm):
@@ -8,3 +8,8 @@ class ForumPostForm(forms.ModelForm):
         model = ForumPost
         fields = ('content',)
 
+
+class ForumThreadForm(forms.ModelForm):
+    class Meta:
+        model = ForumThread
+        fields = ('title', 'content',)
