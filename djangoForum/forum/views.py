@@ -17,11 +17,12 @@ class ForumCategoryView(ListView):
     template_name = 'forum/category-threads.html'
 
     def get_queryset(self):
-        object_list = ForumThread.objects.filter(category_id=self.kwargs['pk'])
+        category = ForumCategory.objects.get(slug=self.kwargs['slug'])
+        object_list = ForumThread.objects.filter(category_id=category.id)
         return object_list
 
 
-class ForumPostCreateView(CreateView):
+class ForumThreadView(CreateView):
     form_class = ForumPostForm
     template_name = 'forum/thread-posts.html'
 

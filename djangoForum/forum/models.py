@@ -6,6 +6,7 @@ User = get_user_model()
 
 class ForumCategory(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False)
+    slug = models.SlugField(max_length=30, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     date_posted = models.DateTimeField(auto_now_add=True)
 

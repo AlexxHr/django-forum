@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     {% for category in object_list %}
-        <a href="{% url 'category threads' category.id %}">{{ category.title }}</a>
+        <a href="{% url 'category threads' category.slug %}">{{ category.title }}</a>
         <hr>
     {% endfor %}
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     {% for thread in object_list %}
-        <a href="{% url 'thread posts' thread.category.id thread.slug %}">{{ thread.title }} | {{ thread.date_posted }}</a>
+        <a href="{% url 'thread posts' thread.slug %}">{{ thread.title }} | {{ thread.date_posted }}</a>
         <hr>
     {% endfor %}
 {% endblock %}
