@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for post in posts %}
+        {{ post.content }}
+        <hr>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Post</button>
+    </form>
+{% endblock %}
