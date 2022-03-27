@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -25,6 +26,7 @@ class ForumCategoryView(ListView):
 
 class ForumThreadCreate(LoginRequiredMixin, CreateView):
     form_class = ForumThreadForm
+    login_url = reverse_lazy('account login')
     template_name = 'forum/thread-create.html'
 
     def form_valid(self, form):
@@ -52,6 +54,7 @@ class ForumThreadView(CreateView):
         thread = ForumThread.objects.get(slug=self.kwargs['slug'])
         posts = ForumPost.objects.filter(thread_id=thread.id)
         context['posts'] = posts
+        context['thread'] = thread
         return context
 
     def get_success_url(self):
@@ -63,4 +66,13 @@ class ForumThreadEdit(UpdateView):
 
 
 class ForumThreadDelete(DeleteView):
-    pass
+    template_name = 'forum/thread-delete.html'
+
+    def get_object(self, **kwargs):
+        slug_ = self.kwargs.get('slug')
+        return get_object_or_404(ForumThread, slug=slug_)
+
+    def get_success_url(self):
+        thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+        category = ForumCategory.objects.get(slug=thread.category.slug)
+        return reverse_lazy('category threads', kwargs={'slug': category.slug})

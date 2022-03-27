@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+    <h1>{{ thread.title }}</h1>
+    <h2>{{ thread.content }}</h2>
+    <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
+    <hr>
+
     {% for post in posts %}
         {{ post.content }}
         <hr>

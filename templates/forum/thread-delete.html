@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post" action="{% url 'thread delete' view.kwargs.slug %}">
+        {{ object }}
+        <button>Delete</button>
+        {% csrf_token %}
+    </form>
+{% endblock %}
