@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <a href="{% url 'category threads' thread.category.slug %}">Back</a>
     <h1>{{ thread.title }}</h1>
     <h2>{{ thread.content }}</h2>
     {% if request.user == thread.user %}

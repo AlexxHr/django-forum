@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% block content %}
+    <a href="{% url 'category threads' view.kwargs.slug %}">Back</a>
     <form method="post" action="{% url 'thread create' view.kwargs.slug %}">
         {{ form.as_p }}
         {% csrf_token %}

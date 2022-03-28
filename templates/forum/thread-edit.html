@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="post" action="{% url 'thread edit' view.kwargs.slug %}">
+    <a href="{% url 'thread posts' object.slug %}">Back</a>
+    <form method="post" action="{% url 'thread edit' object.slug %}">
         {{ form.as_p }}
         {% csrf_token %}
         <button>Edit</button>

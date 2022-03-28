@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="post" action="{% url 'thread delete' view.kwargs.slug %}">
+    <a href="{% url 'thread posts' object.slug %}">Back</a>
+    <form method="post" action="{% url 'thread delete' object.slug %}">
         {{ object }}
         <button>Delete</button>
         {% csrf_token %}

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <p><a href="{% url 'home' %}">Back</a></p>
     <p><a href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a></p>
 
     {% for thread in object_list %}
