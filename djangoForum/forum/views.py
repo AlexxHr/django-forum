@@ -1,11 +1,14 @@
+import self as self
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from djangoForum.accounts.models import ForumUser
 from djangoForum.forum.forms import ForumPostForm, ForumThreadForm
 from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost
 
@@ -62,7 +65,23 @@ class ForumThreadView(CreateView):
 
 
 class ForumThreadEdit(UpdateView):
-    pass
+    template_name = 'forum/thread-edit.html'
+    form_class = ForumThreadForm
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+        if user == thread.user:
+            return super().dispatch(request, *args, **kwargs)
+        thread_path = reverse_lazy('thread posts', kwargs={'slug': self.kwargs['slug']})
+        return HttpResponseRedirect(thread_path)
+
+    def get_object(self, **kwargs):
+        slug_ = self.kwargs.get('slug')
+        return get_object_or_404(ForumThread, slug=slug_)
+
+    def get_success_url(self):
+        return reverse_lazy('thread posts', kwargs={'slug': self.kwargs['slug']})
 
 
 class ForumThreadDelete(DeleteView):

@@ -2,7 +2,10 @@
 {% block content %}
     <h1>{{ thread.title }}</h1>
     <h2>{{ thread.content }}</h2>
-    <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
+    {% if request.user == thread.user %}
+        <a href="{% url 'thread edit' view.kwargs.slug %}">Edit</a>
+        <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
+    {% endif %}
     <hr>
 
     {% for post in posts %}
