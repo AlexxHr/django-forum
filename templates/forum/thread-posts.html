@@ -1,21 +1,38 @@
 {% extends 'base.html' %}
+{#{% block css %}#}
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">#}
+{#{% endblock %}#}
+
 {% block content %}
     <a href="{% url 'category threads' thread.category.slug %}">Back</a>
-    <h1>{{ thread.title }}</h1>
-    <h2>{{ thread.content }}</h2>
-    {% if request.user == thread.user %}
-        <a href="{% url 'thread edit' view.kwargs.slug %}">Edit</a>
-        <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
-    {% endif %}
-    <hr>
+    <div class="container">
+        <div class="row">
+            <h1>{{ thread.title }}</h1>
+            <h2 class="offset-2">{{ thread.content }}</h2>
+        </div>
 
-    {% for post in posts %}
-        {{ post.content }}
-        <hr>
-    {% endfor %}
+        {% if request.user == thread.user %}
+            <a href="{% url 'thread edit' view.kwargs.slug %}">Edit</a>
+            <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
+        {% endif %}
+    </div>
+
+
+    <hr>
     <form method="post">
+        {% for post in posts %}
+            {{ post.content }}
+            <input type="submit" name="{{ post.id }}" value="Edit">
+            <hr>
+        {% endfor %}
+
         {% csrf_token %}
         {{ form.as_p }}
         <button>Post</button>
     </form>
 {% endblock %}
+{##}
+{#{% block js %}#}
+{#    <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>#}
+{#    <script type="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
+{#{% endblock %}#}
