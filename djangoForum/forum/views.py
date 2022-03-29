@@ -20,6 +20,7 @@ class ForumHomeView(ListView):
 
 class ForumCategoryView(ListView):
     template_name = 'forum/category-threads.html'
+    paginate_by = 5
 
     def get_queryset(self):
         category = ForumCategory.objects.get(slug=self.kwargs['slug'])

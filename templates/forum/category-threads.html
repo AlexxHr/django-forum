@@ -1,5 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link text-dark" href="?page=1">First</a></li>
+                    <li class="page-item"><a class="page-link text-dark" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page in page_obj.paginator.page_range %}
+                    {% if page <= page_obj.number|add:5 and page >= page_obj.number|add:-5 %}
+                        {% if page == page_obj.number %}
+                            <li class="page-item active"><a class="page-link text-dark"
+                                                            href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link text-dark"
+                                                     href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link text-dark"
+                                             href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                    <li class="page-item"><a class="page-link text-dark" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
     <p><a href="{% url 'home' %}">Back</a></p>
     <p><a href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a></p>
 
