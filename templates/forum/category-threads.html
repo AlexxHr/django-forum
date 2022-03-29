@@ -46,7 +46,7 @@
         <div class="list-group">
             {% for thread in object_list %}
                 <a class="list-group-item list-group-item-action flex-column align-items-start bg-secondary"
-                   href="{% url 'category threads' thread.slug %}">
+                   href="{% url 'thread posts' thread.slug %}">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-2">{{ thread.title }}</h5>
                         <small>{{ thread.date_posted }}</small>
