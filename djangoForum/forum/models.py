@@ -25,6 +25,9 @@ class ForumThread(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ['-date_posted']
+
 
 class ForumPost(models.Model):
     thread = models.ForeignKey(ForumThread, on_delete=models.CASCADE)
@@ -34,3 +37,6 @@ class ForumPost(models.Model):
 
     def __str__(self):
         return self.content
+
+    class Meta:
+        ordering = ['-date_posted']
