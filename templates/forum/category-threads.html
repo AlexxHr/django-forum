@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
+        <div class="">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
+              </ol>
+            </nav>
+        </div>
         <div class="mt-3">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
@@ -60,6 +68,4 @@
             {% endfor %}
         </div>
     </div>
-
-    <p><a href="{% url 'home' %}">Back</a></p>
 {% endblock %}

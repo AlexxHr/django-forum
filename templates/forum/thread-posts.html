@@ -1,38 +1,37 @@
 {% extends 'base.html' %}
-{#{% block css %}#}
-{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">#}
-{#{% endblock %}#}
 
 {% block content %}
-    <a href="{% url 'category threads' thread.category.slug %}">Back</a>
     <div class="container">
-        <div class="row">
-            <h1>{{ thread.title }}</h1>
-            <h2 class="offset-2">{{ thread.content }}</h2>
-        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category threads' category.slug %}">{{ category.title }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ thread.title }}</li>
+            </ol>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <h1>{{ thread.title }}</h1>
+                <h2 class="offset-2">{{ thread.content }}</h2>
+            </div>
 
-        {% if request.user == thread.user %}
-            <a href="{% url 'thread edit' view.kwargs.slug %}">Edit</a>
-            <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
-        {% endif %}
+            {% if request.user == thread.user %}
+                <a href="{% url 'thread edit' view.kwargs.slug %}">Edit</a>
+                <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
+            {% endif %}
+        </div>
+        <hr>
+        <form method="post">
+            {% for post in posts %}
+                {{ post.content }}
+                <input type="submit" name="{{ post.id }}" value="Edit">
+                <hr>
+            {% endfor %}
+
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button>Post</button>
+        </form>
     </div>
 
-
-    <hr>
-    <form method="post">
-        {% for post in posts %}
-            {{ post.content }}
-            <input type="submit" name="{{ post.id }}" value="Edit">
-            <hr>
-        {% endfor %}
-
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button>Post</button>
-    </form>
 {% endblock %}
-{##}
-{#{% block js %}#}
-{#    <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>#}
-{#    <script type="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
-{#{% endblock %}#}

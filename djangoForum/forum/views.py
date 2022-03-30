@@ -27,6 +27,11 @@ class ForumCategoryView(ListView):
         object_list = ForumThread.objects.filter(category_id=category.id)
         return object_list
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = ForumCategory.objects.get(slug=self.kwargs['slug'])
+        return context
+
 
 class ForumThreadCreate(LoginRequiredMixin, CreateView):
     form_class = ForumThreadForm
@@ -56,9 +61,11 @@ class ForumThreadView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+        category = ForumCategory.objects.get(slug=thread.category.slug)
         posts = ForumPost.objects.filter(thread_id=thread.id)
         context['posts'] = posts
         context['thread'] = thread
+        context['category'] = category
         return context
 
     def get_success_url(self):
