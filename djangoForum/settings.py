@@ -29,11 +29,8 @@ INSTALLED_APPS = [
 
     'djangoForum.accounts.apps.AccountsConfig',
     'djangoForum.forum.apps.ForumConfig',
-
-    'crispy_forms',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

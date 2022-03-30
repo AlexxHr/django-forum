@@ -103,3 +103,35 @@ class ForumThreadDelete(DeleteView):
         thread = ForumThread.objects.get(slug=self.kwargs['slug'])
         category = ForumCategory.objects.get(slug=thread.category.slug)
         return reverse_lazy('category threads', kwargs={'slug': category.slug})
+
+
+class ForumPostEdit(UpdateView):
+    template_name = 'forum/post-edit.html'
+    form_class = ForumPostForm
+
+    def get_object(self, **kwargs):
+        pk_ = self.kwargs.get('pk')
+        return get_object_or_404(ForumPost, pk=pk_)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
+        thread = ForumThread.objects.get(slug=post.thread.slug)
+        context['thread'] = thread
+        return context
+
+    def get_success_url(self):
+        post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
+        return reverse_lazy('thread posts', kwargs={'slug': post.thread.slug})
+
+
+class ForumPostDelete(DeleteView):
+    template_name = 'forum/post-delete.html'
+
+    def get_object(self, **kwargs):
+        pk_ = self.kwargs.get('pk')
+        return get_object_or_404(ForumPost, pk=pk_)
+
+    def get_success_url(self):
+        post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
+        return reverse_lazy('thread posts', kwargs={'slug': post.thread.slug})

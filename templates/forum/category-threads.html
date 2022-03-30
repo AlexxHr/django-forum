@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container">
+    <div class="container bg-dark">
         <div class="">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
@@ -47,11 +47,11 @@
                         <li class="page-item disabled"><a class="page-link"
                                                  href=""><span aria-hidden="true">&raquo;</span></a></li>
                     {% endif %}
-                    <div class="ms-auto p-1"><a class="page-link text-dark"href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a></div>
+                    <div class="ms-auto p-1"><a class="page-link text-dark" href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a></div>
                 </ul>
             </nav>
         </div>
-        <div class="list-group">
+        <div class="list-group pb-2">
             {% for thread in object_list %}
                 <a class="list-group-item list-group-item-action flex-column align-items-start bg-secondary"
                    href="{% url 'thread posts' thread.slug %}">

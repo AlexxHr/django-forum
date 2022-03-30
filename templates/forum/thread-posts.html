@@ -5,7 +5,8 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'category threads' category.slug %}">{{ category.title }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{% url 'category threads' category.slug %}">{{ category.title }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ thread.title }}</li>
             </ol>
         </nav>
@@ -20,18 +21,24 @@
                 <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
             {% endif %}
         </div>
-        <hr>
         <form method="post">
-            {% for post in posts %}
-                {{ post.content }}
-                <input type="submit" name="{{ post.id }}" value="Edit">
-                <hr>
-            {% endfor %}
-
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button>Post</button>
+            <div class="container mt-3 mb-3" style="width:1000px">
+                {{ form }}
+                {% csrf_token %}
+                <button>Post</button>
+            </div>
         </form>
+
+        {% for post in posts %}
+            {{ post.content }}
+            <a href="{% url 'post edit' post.id %}">Edit</a>
+            <a href="{% url 'post delete' post.id %}">Delete</a>
+            <hr>
+        {% endfor %}
+
+
+
+
     </div>
 
 {% endblock %}
