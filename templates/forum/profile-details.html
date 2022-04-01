@@ -7,23 +7,18 @@
                 <div class="col col-lg-9 col-xl-10">
                     <div class="card">
                         <div class="text-white d-flex flex-row bg-dark" style="height:200px;">
-                            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; ">
                                 {% if object.profile.image %}
                                     <img src="{{ MEDIA_URL }}{{ object.profile.image }}"
                                          alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                         style="width: 150px; z-index: 1">
+                                         style="width: 150px; height: 150px; z-index: 1">
                                 {% else %}
                                     <img src="{% static 'images/Sample_User_Icon.png' %}"
                                          alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                         style="width: 150px; z-index: 1">
+                                         style="width: 150px; height: 150px; z-index: 1">
                                 {% endif %}
-                                <a href="{% url 'profile edit' object.pk %}" type="button" class="btn btn-outline-dark"
-                                   data-mdb-ripple-color="dark" style="z-index: 1;">
-                                    Edit profile
-                                </a>
+
                             </div>
-
-
                             <div class="ms-3" style="margin-top: 130px;">
                                 <h3>{{ object.username }}</h3>
                                 <p>Member</p>
@@ -36,6 +31,10 @@
                         </div>
                         <div class="p-4 text-black" style="background-color: #f8f9fa;">
                             <div class="d-flex justify-content-end text-center py-1">
+                                <a href="{% url 'profile edit' object.pk %}" type="button" class="btn btn-outline-dark me-auto mb-2"
+                                   data-mdb-ripple-color="dark" style="z-index: 1;">
+                                    Edit profile
+                                </a>
                                 <div>
                                     <p class="mb-1 h5">{{ object.profile.get_user_posts|length }}</p>
                                     <p class="small text-muted mb-0">Posts</p>
@@ -71,11 +70,11 @@
                                             {% if object.profile.image %}
                                                 <img src="{{ MEDIA_URL }}{{ object.profile.image }}"
                                                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                                     style="width: 150px; z-index: 1">
+                                                     style="width: 150px; height: 150px; z-index: 1">
                                             {% else %}
                                                 <img src="{% static 'images/Sample_User_Icon.png' %}"
                                                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                                     style="width: 150px; z-index: 1">
+                                                     style="width: 150px; height: 150px; z-index: 1">
                                             {% endif %}
                                         </div>
                                         <div class="d-flex flex-column flex-grow-1">
