@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 
 {% block content %}
-    <form method="post" action="{% url 'account login' %}">
-        {{ form }}
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
-        <button>Login</button>
-    </form>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card px-5 py-5">
+                    <div class="mb-3"><h3>Login:</h3></div>
+                    <div class="form-data">
+                        <form method="post" action="{% url 'account login' %}">
+                            <div class="mb-3">
+                                {{ form|crispy }}
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                                <button class="btn btn-dark w-100 mt-2">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                    <p>Not Registered? <a href="{% url 'account register' %}">Create an account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

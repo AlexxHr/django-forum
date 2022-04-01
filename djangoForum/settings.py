@@ -29,6 +29,8 @@ INSTALLED_APPS = [
 
     'djangoForum.accounts.apps.AccountsConfig',
     'djangoForum.forum.apps.ForumConfig',
+
+    'crispy_forms'
 ]
 
 
