@@ -33,7 +33,7 @@
                 <div class="list-group-item bg-secondary mb-2 text-light">
                     <div class="d-flex flex-row">
                         <div class="d-flex flex-column me-3">
-                            <h5>{{ post.user.username }}</h5>
+                            <a href="{% url 'profile details' post.user.pk %}"><h5>{{ post.user.username }}</h5></a>
                             <img src="https://static.vecteezy.com/packs/media/components/global/search-explore-nav/img/vectors/term-bg-1-666de2d941529c25aa511dc18d727160.jpg"
                                  alt="Girl in a jacket" width="80" height="80">
                         </div>

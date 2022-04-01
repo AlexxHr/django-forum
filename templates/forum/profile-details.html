@@ -49,7 +49,7 @@
                 <div class="list-group-item bg-secondary mb-2 text-light">
                     <div class="d-flex flex-row">
                         <div class="d-flex flex-column me-3">
-                            <h5>{{ post.user.username }}</h5>
+                            <a href="{% url 'profile details' post.user.pk %}"><h5>{{ post.user.username }}</h5></a>
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
                         </div>
                         <div class="d-flex flex-column flex-grow-1">
