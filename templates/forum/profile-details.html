@@ -1,78 +1,92 @@
 {% extends 'base.html' %}
 {% block content %}
     <section class="h-100 gradient-custom-2">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-lg-9 col-xl-10">
-        <div class="card">
-          <div class="text-white d-flex flex-row bg-dark" style="height:200px;">
-            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
-              <a href="{% url 'profile edit' object.pk %}" type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
-                Edit profile
-              </a>
-            </div>
-            <div class="ms-3" style="margin-top: 130px;">
-              <h3>{{ object.username }}</h3>
-              <p>Member</p>
-            </div>
-          </div>
-          <div class="p-4 text-black" style="background-color: #f8f9fa;">
-            <div class="d-flex justify-content-end text-center py-1">
-              <div>
-                <p class="mb-1 h5">{{ object.profile.get_user_posts|length }}</p>
-                <p class="small text-muted mb-0">Posts</p>
-              </div>
-              <div class="px-3">
-                <p class="mb-1 h5">{{ object.profile.date_joined }}</p>
-                <p class="small text-muted mb-0">Joined</p>
-              </div>
-              <div>
-                <p class="mb-1 h5">{{ object.last_login }}</p>
-                <p class="small text-muted mb-0">Last Visited</p>
-              </div>
-            </div>
-          </div>
-          <div class="card-body p-4 text-black">
-            <div class="mb-5">
-              <p class="lead fw-normal mb-1">About</p>
-              <div class="p-4" style="background-color: #f8f9fa;">
-                <p class="font-italic mb-1">{{ object.profile.bio }}</p>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <p class="lead fw-normal mb-0">Recent posts</p>
-              <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
-            </div>
-
-            {% for post in object.profile.get_user_posts|slice:":5" %}
-                <div class="list-group-item bg-secondary mb-2 text-light">
-                    <div class="d-flex flex-row">
-                        <div class="d-flex flex-column me-3">
-                            <a href="{% url 'profile details' post.user.pk %}"><h5>{{ post.user.username }}</h5></a>
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-lg-9 col-xl-10">
+                    <div class="card">
+                        <div class="text-white d-flex flex-row bg-dark" style="height:200px;">
+                            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                     alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                                     style="width: 150px; z-index: 1">
+                                <a href="{% url 'profile edit' object.pk %}" type="button" class="btn btn-outline-dark"
+                                   data-mdb-ripple-color="dark" style="z-index: 1;">
+                                    Edit profile
+                                </a>
+                            </div>
+                            <div class="ms-3" style="margin-top: 130px;">
+                                <h3>{{ object.username }}</h3>
+                                <p>Member</p>
+                            </div>
+                            {% if request.user == object %}
+                                <div class="ms-auto me-3" style="margin-top: 15px;"><a
+                                        class="ms-2 bg-light btn btn-outline-danger"
+                                        href="{% url 'account delete' object.pk %}">Delete</a></div>
+                            {% endif %}
                         </div>
-                        <div class="d-flex flex-column flex-grow-1">
-                            <div class="d-flex">
-                                <small class="p-1 me-auto">{{ post.date_posted }}</small>
-                                {% if request.user == post.user %}
-                                    <a class="ms-2 bg-light btn btn-outline-dark" href="{% url 'post edit' post.id %}">Edit</a>
-                                    <a class="ms-2 bg-light btn btn-outline-danger" href="{% url 'post delete' post.id %}">Delete</a>
-                                {% endif %}
+                        <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                            <div class="d-flex justify-content-end text-center py-1">
+                                <div>
+                                    <p class="mb-1 h5">{{ object.profile.get_user_posts|length }}</p>
+                                    <p class="small text-muted mb-0">Posts</p>
+                                </div>
+                                <div class="px-3">
+                                    <p class="mb-1 h5">{{ object.profile.date_joined }}</p>
+                                    <p class="small text-muted mb-0">Joined</p>
+                                </div>
+                                <div>
+                                    <p class="mb-1 h5">{{ object.last_login }}</p>
+                                    <p class="small text-muted mb-0">Last Visited</p>
+                                </div>
                             </div>
-                            <div class="d=flex flex-grow-1">
-                                <p class="text-break ms-5 me-5">
-                                    {{ post.content }}
-                                </p>
+                        </div>
+                        <div class="card-body p-4 text-black">
+                            <div class="mb-5">
+                                <p class="lead fw-normal mb-1">About</p>
+                                <div class="p-4" style="background-color: #f8f9fa;">
+                                    <p class="font-italic mb-1">{{ object.profile.bio }}</p>
+                                </div>
                             </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <p class="lead fw-normal mb-0">Recent posts</p>
+                                <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                            </div>
+
+                            {% for post in object.profile.get_user_posts|slice:":5" %}
+                                <div class="list-group-item bg-secondary mb-2 text-light">
+                                    <div class="d-flex flex-row">
+                                        <div class="d-flex flex-column me-3">
+                                            <a href="{% url 'profile details' post.user.pk %}">
+                                                <h5>{{ post.user.username }}</h5></a>
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                                 alt="Generic placeholder image"
+                                                 class="img-fluid img-thumbnail mt-4 mb-2"
+                                                 style="width: 150px; z-index: 1">
+                                        </div>
+                                        <div class="d-flex flex-column flex-grow-1">
+                                            <div class="d-flex">
+                                                <small class="p-1 me-auto">{{ post.date_posted }}</small>
+                                                {% if request.user == post.user %}
+                                                    <a class="ms-2 bg-light btn btn-outline-dark"
+                                                       href="{% url 'post edit' post.id %}">Edit</a>
+                                                    <a class="ms-2 bg-light btn btn-outline-danger"
+                                                       href="{% url 'post delete' post.id %}">Delete</a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="d=flex flex-grow-1">
+                                                <p class="text-break ms-5 me-5">
+                                                    {{ post.content }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 {% endblock %}
