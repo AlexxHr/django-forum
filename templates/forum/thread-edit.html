@@ -1,9 +1,22 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% block content %}
-    <a href="{% url 'thread posts' object.slug %}">Back</a>
-    <form method="post" action="{% url 'thread edit' object.slug %}">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button>Edit</button>
-    </form>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card px-5 py-5">
+                    <div class="mb-3"><h3>Edit Thread:</h3></div>
+                    <div class="form-data">
+                        <form method="post" action="{% url 'thread edit' object.slug %}">
+                            <div class="mb-3">
+                                {{ form|crispy }}
+                                {% csrf_token %}
+                                <button class="btn btn-dark w-100 mt-2">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
