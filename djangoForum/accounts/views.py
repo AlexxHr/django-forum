@@ -3,10 +3,10 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404
 
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView
 
-from djangoForum.accounts.forms import AccountRegisterForm, AccountEditForm
-from djangoForum.forum.models import Profile
+from djangoForum.accounts.forms import AccountRegisterForm
+
 
 User = get_user_model()
 
@@ -38,26 +38,3 @@ class AccountDelete(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('home')
-
-
-class AccountDetails(DetailView):
-    model = User
-    template_name = 'accounts/account-details.html'
-
-
-class AccountEdit(UpdateView):
-    template_name = 'accounts/account-edit.html'
-    form_class = AccountEditForm
-
-    def get_object(self, **kwargs):
-        return get_object_or_404(Profile, pk=self.kwargs.get('pk'))
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
-    #     thread = ForumThread.objects.get(slug=post.thread.slug)
-    #     context['thread'] = thread
-    #     return context
-
-    def get_success_url(self):
-        return reverse_lazy('account details', kwargs={'pk': self.kwargs.get('pk')})

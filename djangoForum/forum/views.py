@@ -1,14 +1,17 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from djangoForum.forum.forms import ForumPostForm, ForumThreadForm
-from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost
+from djangoForum.forum.forms import ForumPostForm, ForumThreadForm, ProfileEditForm
+from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost, Profile
+
+User = get_user_model()
 
 
 class ForumHomeView(ListView):
@@ -133,3 +136,19 @@ class ForumPostDelete(DeleteView):
     def get_success_url(self):
         post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
         return reverse_lazy('thread posts', kwargs={'slug': post.thread.slug})
+
+
+class ProfileDetails(DetailView):
+    model = User
+    template_name = 'forum/profile-details.html'
+
+
+class ProfileEdit(UpdateView):
+    template_name = 'forum/profile-edit.html'
+    form_class = ProfileEditForm
+
+    def get_object(self, **kwargs):
+        return get_object_or_404(Profile, pk=self.kwargs.get('pk'))
+
+    def get_success_url(self):
+        return reverse_lazy('profile details', kwargs={'pk': self.kwargs.get('pk')})

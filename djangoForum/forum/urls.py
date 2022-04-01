@@ -1,6 +1,6 @@
 from django.urls import path
 from djangoForum.forum.views import ForumHomeView, ForumCategoryView, ForumThreadView, ForumThreadCreate, \
-    ForumThreadDelete, ForumThreadEdit, ForumPostEdit, ForumPostDelete
+    ForumThreadDelete, ForumThreadEdit, ForumPostEdit, ForumPostDelete, ProfileDetails, ProfileEdit
 
 urlpatterns = [
     path('', ForumHomeView.as_view(), name='home'),
@@ -13,4 +13,7 @@ urlpatterns = [
 
     path('post/<pk>/edit', ForumPostEdit.as_view(), name='post edit'),
     path('post/<pk>/delete', ForumPostDelete.as_view(), name='post delete'),
+
+    path('profile/<pk>', ProfileDetails.as_view(), name='profile details'),
+    path('profile/<pk>/edit/', ProfileEdit.as_view(), name='profile edit'),
 ]

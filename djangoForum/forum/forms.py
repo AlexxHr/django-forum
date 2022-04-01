@@ -1,6 +1,6 @@
 from django import forms
 
-from djangoForum.forum.models import ForumPost, ForumThread
+from djangoForum.forum.models import ForumPost, ForumThread, Profile
 
 
 class ForumPostForm(forms.ModelForm):
@@ -24,3 +24,9 @@ class ForumThreadForm(forms.ModelForm):
     class Meta:
         model = ForumThread
         fields = ('title', 'content',)
+
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('bio', 'image',)
