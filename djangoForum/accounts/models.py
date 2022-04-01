@@ -19,11 +19,3 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(ForumUser, on_delete=models.CASCADE, primary_key=True)
-    image = models.ImageField(blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-

@@ -4,6 +4,17 @@ from django.db import models
 User = get_user_model()
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    image = models.ImageField(blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    def get_user_posts(self):
+        posts = ForumPost.objects.filter(user_id=self.pk)
+        return posts
+
+
 class ForumCategory(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False)
     slug = models.SlugField(max_length=30, null=True, blank=True)
