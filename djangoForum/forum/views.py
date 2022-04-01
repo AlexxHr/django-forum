@@ -1,14 +1,12 @@
-import self as self
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from djangoForum.accounts.models import ForumUser
 from djangoForum.forum.forms import ForumPostForm, ForumThreadForm
 from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost
 
