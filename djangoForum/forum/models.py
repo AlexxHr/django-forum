@@ -45,6 +45,8 @@ class ForumPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
+    edited = models.BooleanField(default=False)
+    date_edited = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.content

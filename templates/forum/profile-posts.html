@@ -1,40 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a
-                        href="{% url 'category threads' category.slug %}">{{ category.title }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ thread.title }}</li>
-            </ol>
-        </nav>
-        <div class="container">
-            <div class="row">
-                <h1>{{ thread.title }}</h1>
-                <h2 class="offset-2">{{ thread.content }}</h2>
-            </div>
-
-            {% if request.user == thread.user %}
-                <a href="{% url 'thread edit' view.kwargs.slug %}">Edit</a>
-                <a href="{% url 'thread delete' view.kwargs.slug %}">Delete</a>
-            {% endif %}
-        </div>
-        <form method="post">
-            <div class="container mt-3 mb-3" style="width:1000px">
-                {{ form }}
-                {% csrf_token %}
-                <button>Post</button>
-            </div>
-        </form>
-        <div>
-            {% for post in posts %}
+        <a href="{% url 'profile details' view.kwargs.pk %}">Back</a>
+        <div class="py-5 h-100">
+            {% for post in object_list %}
                 <div class="list-group-item bg-secondary mb-2 text-light">
                     <div class="d-flex flex-row">
                         <div class="d-flex flex-column me-3">
-                            <a href="{% url 'profile details' post.user.pk %}"><h5>{{ post.user.username }}</h5></a>
+                            <a href="{% url 'profile details' post.user.pk %}">
+                                <h5>{{ post.user.username }}</h5></a>
                             {% if post.user.profile.image %}
                                 <img src="{{ MEDIA_URL }}{{ post.user.profile.image }}"
                                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
@@ -52,7 +27,8 @@
                                 {% endif %}
                                 <small class="p-1 me-auto">{{ post.date_posted }}</small>
                                 {% if request.user == post.user %}
-                                    <a class="ms-2 bg-light btn btn-outline-dark" href="{% url 'post edit' post.id %}">Edit</a>
+                                    <a class="ms-2 bg-light btn btn-outline-dark"
+                                       href="{% url 'post edit' post.id %}">Edit</a>
                                     <a class="ms-2 bg-light btn btn-outline-danger"
                                        href="{% url 'post delete' post.id %}">Delete</a>
                                 {% endif %}
@@ -68,4 +44,5 @@
             {% endfor %}
         </div>
     </div>
+
 {% endblock %}

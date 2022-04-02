@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -110,6 +112,12 @@ class ForumPostEdit(UpdateView):
     template_name = 'forum/post-edit.html'
     form_class = ForumPostForm
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        if form.initial['content'] != post.content:
+            post.edited = True
+        return super().form_valid(form)
+
     def get_object(self, **kwargs):
         pk_ = self.kwargs.get('pk')
         return get_object_or_404(ForumPost, pk=pk_)
@@ -152,3 +160,12 @@ class ProfileEdit(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('profile details', kwargs={'pk': self.kwargs.get('pk')})
+
+
+class ProfilePosts(ListView):
+    template_name = 'forum/profile-posts.html'
+    # paginate_by = 5
+
+    def get_queryset(self):
+        object_list = ForumPost.objects.filter(user_id=self.kwargs['pk'])
+        return object_list
