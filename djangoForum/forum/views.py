@@ -122,13 +122,6 @@ class ForumPostEdit(UpdateView):
         pk_ = self.kwargs.get('pk')
         return get_object_or_404(ForumPost, pk=pk_)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
-        thread = ForumThread.objects.get(slug=post.thread.slug)
-        context['thread'] = thread
-        return context
-
     def get_success_url(self):
         post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
         return reverse_lazy('thread posts', kwargs={'slug': post.thread.slug})
@@ -164,7 +157,7 @@ class ProfileEdit(UpdateView):
 
 class ProfilePosts(ListView):
     template_name = 'forum/profile-posts.html'
-    # paginate_by = 5
+    paginate_by = 5
 
     def get_queryset(self):
         object_list = ForumPost.objects.filter(user_id=self.kwargs['pk'])
