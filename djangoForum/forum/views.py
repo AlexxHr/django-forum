@@ -51,28 +51,46 @@ class ForumThreadCreate(LoginRequiredMixin, CreateView):
         return reverse_lazy('category threads', kwargs={'slug': self.kwargs['slug']})
 
 
-class ForumThreadView(CreateView):
-    form_class = ForumPostForm
+class ForumThreadView(ListView):
     template_name = 'forum/thread-posts.html'
+    paginate_by = 5
+    context_object_name = 'posts'
 
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.user = self.request.user
-        post.thread = ForumThread.objects.get(slug=self.kwargs['slug'])
-        return super().form_valid(form)
+    def get_queryset(self):
+        thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+        object_list = ForumPost.objects.filter(thread_id=thread.id)
+        return object_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         thread = ForumThread.objects.get(slug=self.kwargs['slug'])
         category = ForumCategory.objects.get(slug=thread.category.slug)
-        posts = ForumPost.objects.filter(thread_id=thread.id)
-        context['posts'] = posts
         context['thread'] = thread
         context['category'] = category
         return context
 
-    def get_success_url(self):
-        return self.request.path
+# class ForumThreadView(CreateView):
+#     form_class = ForumPostForm
+#     template_name = 'forum/thread-posts.html'
+#
+#     def form_valid(self, form):
+#         post = form.save(commit=False)
+#         post.user = self.request.user
+#         post.thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+#         return super().form_valid(form)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+#         category = ForumCategory.objects.get(slug=thread.category.slug)
+#         posts = ForumPost.objects.filter(thread_id=thread.id)
+#         context['posts'] = posts
+#         context['thread'] = thread
+#         context['category'] = category
+#         return context
+#
+#     def get_success_url(self):
+#         return self.request.path
 
 
 class ForumThreadEdit(UpdateView):

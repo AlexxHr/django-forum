@@ -53,7 +53,7 @@ class ForumPost(models.Model):
         return self.content
 
     class Meta:
-        ordering = ['-date_posted']
+        ordering = ['date_posted']
 
     @property
     def children(self):
