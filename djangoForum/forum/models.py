@@ -47,9 +47,20 @@ class ForumPost(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
     date_edited = models.DateTimeField(auto_now=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
         return self.content
 
     class Meta:
         ordering = ['-date_posted']
+
+    @property
+    def children(self):
+        return ForumPost.objects.filter(parent=self).reverse()
+
+    @property
+    def is_parent(self):
+        if self.parent is None:
+            return True
+        return False
