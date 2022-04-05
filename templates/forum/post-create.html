@@ -1,22 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'form.html' %}
 {% load crispy_forms_filters %}
-{% block content %}
-    <div class="container mt-5">
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-6">
-                <div class="card px-5 py-5">
-                    <div class="mb-3"><h3>Create Post:</h3></div>
-                    <div class="form-data">
-                        <form method="post" action="{% url 'post create' view.kwargs.slug %}">
-                            <div class="mb-3">
-                                {{ form|crispy }}
-                                {% csrf_token %}
-                                <button class="btn btn-dark w-100 mt-2">Post</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+
+{% block form %}
+    <div class="mb-3"><h3>Create Post:</h3></div>
+    <div class="form-data">
+        <form method="post" action="{% url 'post create' view.kwargs.slug %}">
+            <div class="mb-3">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button class="btn btn-dark w-100 mt-2">Post</button>
             </div>
-        </div>
+        </form>
     </div>
 {% endblock %}

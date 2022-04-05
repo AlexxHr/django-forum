@@ -1,9 +1,14 @@
-{% extends 'base.html'%}
-{% block content %}
-    <a href="{% url 'category threads' view.kwargs.slug %}">Back</a>
-    <form method="post" action="{% url 'thread create' view.kwargs.slug %}">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button>Create</button>
-    </form>
+{% extends 'form.html' %}
+{% load crispy_forms_filters %}
+{% block form %}
+    <div class="mb-3"><h3>Create Post:</h3></div>
+    <div class="form-data">
+        <form method="post" action="{% url 'thread create' view.kwargs.slug %}">
+            <div class="mb-3">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button class="btn btn-dark w-100 mt-2">Create</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

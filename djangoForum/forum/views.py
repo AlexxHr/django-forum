@@ -148,7 +148,7 @@ class ForumPostReply(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['reply_post'] = reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
+        context['reply_post'] = ForumPost.objects.get(pk=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
