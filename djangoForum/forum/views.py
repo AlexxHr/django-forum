@@ -126,6 +126,39 @@ class ForumThreadDelete(DeleteView):
         return reverse_lazy('category threads', kwargs={'slug': category.slug})
 
 
+class ForumPostCreate(LoginRequiredMixin, CreateView):
+    form_class = ForumPostForm
+    login_url = reverse_lazy('account login')
+    template_name = 'forum/post-create.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.user = self.request.user
+        post.thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('thread posts', kwargs={'slug': self.kwargs['slug']})
+
+
+class ForumPostReply(LoginRequiredMixin, CreateView):
+    form_class = ForumPostForm
+    login_url = reverse_lazy('account login')
+    template_name = 'forum/post-reply.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
+        post.parent = reply_post
+        post.user = self.request.user
+        post.thread = ForumThread.objects.get(slug=reply_post.thread.slug)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
+        return reverse_lazy('thread posts', kwargs={'slug': reply_post.thread.slug})
+
+
 class ForumPostEdit(UpdateView):
     template_name = 'forum/post-edit.html'
     form_class = ForumPostForm

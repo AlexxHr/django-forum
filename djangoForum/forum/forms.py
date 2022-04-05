@@ -17,7 +17,7 @@ class ForumPostForm(forms.ModelForm):
 
     class Meta:
         model = ForumPost
-        exclude = ('thread', 'user', 'edited')
+        exclude = ('thread', 'user', 'edited', 'parent')
 
 
 class ForumThreadForm(forms.ModelForm):
