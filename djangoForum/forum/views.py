@@ -146,6 +146,11 @@ class ForumPostReply(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('account login')
     template_name = 'forum/post-reply.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reply_post'] = reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
+        return context
+
     def form_valid(self, form):
         post = form.save(commit=False)
         reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])

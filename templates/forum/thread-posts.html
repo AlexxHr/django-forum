@@ -77,18 +77,16 @@
                             {% if post.user.profile.image %}
                                 <img src="{{ MEDIA_URL }}{{ post.user.profile.image }}"
                                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                     style="width: 150px; height: 150px; z-index: 1">
+                                     style="width: 160px; height: 150px; z-index: 1">
                             {% else %}
                                 <img src="{% static 'images/Sample_User_Icon.png' %}"
                                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                     style="width: 150px; height: 150px; z-index: 1">
+                                     style="width: 160px; height: 150px; z-index: 1">
                             {% endif %}
                         </div>
-                        <div class="d-flex flex-column flex-grow-1">
-                            <div class="d-flex">
-                                {% if not post.is_parent %}
-                                    <a href="#{{ post.parent.id }}">{{ post.parent.user.username }}</a>
-                                {% endif %}
+                        <div class="d-flex flex-column ms-2" style="width: 1200px;">
+                            <div class="d-flex mb-1">
+
                                 {% if post.edited %}
                                     <small>(edited)</small>
                                 {% endif %}
@@ -102,7 +100,15 @@
                                 <a class="ms-2 bg-light btn btn-outline-dark"
                                    href="{% url 'post reply' post.id %}">Reply</a>
                             </div>
-                            <div class="d=flex flex-grow-1">
+                            <div class="d-flex flex-column mt-2">
+                                {% if not post.is_parent %}
+                                    <div class="p-1 text-dark" style="background-color: rgba(250,252,252,0.45)">
+                                    <small>On {{ post.parent.date_posted }} <a href="{% url 'profile details' post.parent.user.id %}">{{ post.parent.user.username }}</a> said:</small>
+                                    </div>
+                                    <div class="p-3 mb-2 text-break" style="background-color: rgba(250,252,252,0.15)">{{ post.parent }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="">
                                 <p class="text-break ms-5 me-5">
                                     {{ post.content }}
                                 </p>

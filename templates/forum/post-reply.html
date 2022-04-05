@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_filters %}
 {% block content %}
     <div class="container mt-5">
@@ -6,6 +7,35 @@
             <div class="col-md-6">
                 <div class="card px-5 py-5">
                     <div class="mb-3"><h3>Reply to Post:</h3></div>
+                    <div class="list-group-item bg-secondary mb-2 text-light">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column me-3">
+                                <a><h5>{{ reply_post.user.username }}</h5></a>
+                                {% if reply_post.user.profile.image %}
+                                    <img src="{{ MEDIA_URL }}{{ reply_post.user.profile.image }}"
+                                         alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                                         style="width: 150px; height: 150px; z-index: 1">
+                                {% else %}
+                                    <img src="{% static 'images/Sample_User_Icon.png' %}"
+                                         alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                                         style="width: 150px; height: 150px; z-index: 1">
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1">
+                                <div class="d-flex">
+                                    {% if reply_post.edited %}
+                                        <small>(edited)</small>
+                                    {% endif %}
+                                    <small class="p-1 me-auto">{{ reply_post.date_posted }}</small>
+                                </div>
+                                <div class="d=flex flex-grow-1">
+                                    <p class="text-break ms-5 me-5">
+                                        {{ reply_post.content }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-data">
                         <form method="post" action="{% url 'post reply' view.kwargs.pk %}">
                             <div class="mb-3">
