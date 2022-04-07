@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -69,41 +70,18 @@ class ForumThreadView(ListView):
         context['category'] = category
         return context
 
-# class ForumThreadView(CreateView):
-#     form_class = ForumPostForm
-#     template_name = 'forum/thread-posts.html'
-#
-#     def form_valid(self, form):
-#         post = form.save(commit=False)
-#         post.user = self.request.user
-#         post.thread = ForumThread.objects.get(slug=self.kwargs['slug'])
-#         return super().form_valid(form)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         thread = ForumThread.objects.get(slug=self.kwargs['slug'])
-#         category = ForumCategory.objects.get(slug=thread.category.slug)
-#         posts = ForumPost.objects.filter(thread_id=thread.id)
-#         context['posts'] = posts
-#         context['thread'] = thread
-#         context['category'] = category
-#         return context
-#
-#     def get_success_url(self):
-#         return self.request.path
-
 
 class ForumThreadEdit(UpdateView):
     template_name = 'forum/thread-edit.html'
     form_class = ForumThreadForm
 
     def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
         user = self.request.user
-        thread = ForumThread.objects.get(slug=self.kwargs['slug'])
-        if user == thread.user:
-            return super().dispatch(request, *args, **kwargs)
-        thread_path = reverse_lazy('thread posts', kwargs={'slug': self.kwargs['slug']})
-        return HttpResponseRedirect(thread_path)
+        thread = self.get_object()
+        if not (thread.user == user or user.is_superuser):
+            raise PermissionDenied
+        return handler
 
     def get_object(self, **kwargs):
         slug_ = self.kwargs.get('slug')
@@ -115,6 +93,14 @@ class ForumThreadEdit(UpdateView):
 
 class ForumThreadDelete(DeleteView):
     template_name = 'forum/thread-delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        user = self.request.user
+        thread = self.get_object()
+        if not (thread.user == user or user.is_superuser):
+            raise PermissionDenied
+        return handler
 
     def get_object(self, **kwargs):
         slug_ = self.kwargs.get('slug')
@@ -169,6 +155,14 @@ class ForumPostEdit(UpdateView):
     template_name = 'forum/post-edit.html'
     form_class = ForumPostForm
 
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        user = self.request.user
+        post = self.get_object()
+        if not (post.user == user or user.is_superuser):
+            raise PermissionDenied
+        return handler
+
     def form_valid(self, form):
         post = form.save(commit=False)
         if form.initial['content'] != post.content:
@@ -186,6 +180,14 @@ class ForumPostEdit(UpdateView):
 
 class ForumPostDelete(DeleteView):
     template_name = 'forum/post-delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        user = self.request.user
+        post = self.get_object()
+        if not (post.user == user or user.is_superuser):
+            raise PermissionDenied
+        return handler
 
     def get_object(self, **kwargs):
         pk_ = self.kwargs.get('pk')
