@@ -154,6 +154,7 @@ class ForumPostReply(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
+        post.is_reply = True
         post.parent = reply_post
         post.user = self.request.user
         post.thread = ForumThread.objects.get(slug=reply_post.thread.slug)

@@ -47,7 +47,8 @@ class ForumPost(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
     date_edited = models.DateTimeField(auto_now=True)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='replies')
+    is_reply = models.BooleanField(default=False)
 
     def __str__(self):
         return self.content

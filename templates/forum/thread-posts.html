@@ -64,7 +64,13 @@
                                    href="{% url 'post reply' post.id %}">Reply</a>
                             </div>
                             <div class="d-flex flex-column mt-2">
+                                {% if post.is_reply and post.is_parent %}
+                                    <div class="p-1 text-dark" style="background-color: rgba(250,252,252,0.45)">
+                                    </div>
+                                    <div class="p-3 mb-2 text-break" style="background-color: rgba(250,252,252,0.15)"><h5>The replied post has been deleted</h5></div>
+                                {% endif %}
                                 {% if not post.is_parent %}
+
                                     <div class="p-1 text-dark" style="background-color: rgba(250,252,252,0.45)">
                                     <small>On {{ post.parent.date_posted }} <a href="{% url 'profile details' post.parent.user.id %}">{{ post.parent.user.username }}</a> said:</small>
                                     </div>
