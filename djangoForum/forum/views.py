@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -96,10 +97,11 @@ class ForumThreadDelete(DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         handler = super().dispatch(request, *args, **kwargs)
-        user = self.request.user
-        thread = self.get_object()
-        if not (thread.user == user or user.is_superuser):
-            raise PermissionDenied
+        if not request.POST:
+            user = self.request.user
+            thread = self.get_object()
+            if not (thread.user == user or user.is_superuser):
+                raise PermissionDenied
         return handler
 
     def get_object(self, **kwargs):
@@ -183,10 +185,11 @@ class ForumPostDelete(DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         handler = super().dispatch(request, *args, **kwargs)
-        user = self.request.user
-        post = self.get_object()
-        if not (post.user == user or user.is_superuser):
-            raise PermissionDenied
+        if not request.POST:
+            user = self.request.user
+            post = self.get_object()
+            if not (post.user == user or user.is_superuser):
+                raise PermissionDenied
         return handler
 
     def get_object(self, **kwargs):
