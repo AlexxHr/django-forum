@@ -218,3 +218,16 @@ class ProfilePosts(ListView):
     def get_queryset(self):
         object_list = ForumPost.objects.filter(user_id=self.kwargs['pk'])
         return object_list
+
+
+class SearchResults(ListView):
+    template_name = 'forum/search-results.html'
+    model = ForumThread
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            object_list = self.model.objects.filter(title__icontains=query)
+        else:
+            object_list = self.model.objects.none()
+        return object_list

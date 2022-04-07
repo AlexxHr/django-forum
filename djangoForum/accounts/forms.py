@@ -12,9 +12,3 @@ class AccountRegisterForm(UserCreationForm):
         fields = ("email", "username")
 
 
-# class AccountEditForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ('bio', 'image',)
-
-
