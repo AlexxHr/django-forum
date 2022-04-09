@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container bg-dark" style="height: auto;">
+    <div class="container" style="height: auto;">
         <div class="">
             <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
-              </ol>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
+                </ol>
             </nav>
         </div>
         <div class="mt-3">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     {% include 'pagination.html' %}
-                    <div class="ms-auto p-1"><a class="page-link text-dark" href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a></div>
+                    <div class="ms-auto p-1"><a class="page-link text-dark"
+                                                href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a>
+                    </div>
                 </ul>
             </nav>
         </div>
-        <div class="list-group pb-2">
-            {% include 'threads.html' %}
-        </div>
-    </div>
+        {% if object_list %}
+            <div class="list-group pb-2">
+                {% for thread in object_list %}
+                    {% include 'threads.html' %}
+                {% endfor %}
+            </div>
+            </div>
+        {% else %}
+            <h1>No threads created yet.</h1>
+        {% endif %}
 {% endblock %}

@@ -1,17 +1,15 @@
-{% for thread in object_list %}
-    <a class="list-group-item list-group-item-action flex-column align-items-start bg-secondary"
-       href="{% url 'thread posts' thread.slug %}">
-        <div class="d-flex w-100 justify-content-between">
-            <h4 class="mb-2">{{ thread.title }}</h4>
-            <small>{{ thread.date_posted }}</small>
-        </div>
-        <div class="d-flex">
-            {% if thread.content|length > 100 %}
-                <p class="mb-1">{{ thread.content|safe|slice:":100" }}...</p>
-            {% else %}
-                <p class="mb-1">{{ thread.content|safe }}</p>
-            {% endif %}
-            <small class="ms-auto">posts:100</small>
-        </div>
-    </a>
-{% endfor %}
+<a class="list-group-item list-group-item-action flex-column align-items-start bg-secondary"
+   href="{% url 'thread posts' thread.slug %}">
+    <div class="d-flex w-100 justify-content-between">
+        <h4 class="mb-2">{{ thread.title }}</h4>
+        <small>{{ thread.date_posted }}</small>
+    </div>
+    <div class="d-flex">
+        {% if thread.content|length > 100 %}
+            <p class="mb-1">{{ thread.content|safe|slice:":100" }}...</p>
+        {% else %}
+            <p class="mb-1">{{ thread.content|safe }}</p>
+        {% endif %}
+        <small class="ms-auto">posts: {{ thread.get_thread_posts|length }}</small>
+    </div>
+</a>

@@ -4,7 +4,9 @@
         {% if object_list %}
             <h1>Search results: {{ object_list|length }}</h1>
             <div class="list-group pb-2">
-                {% include 'threads.html' %}
+                {% for thread in object_list %}
+                    {% include 'threads.html' %}
+                {% endfor %}
             </div>
         {% else %}
             <h1>No results!</h1>

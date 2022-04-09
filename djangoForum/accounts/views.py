@@ -1,4 +1,5 @@
 from django.contrib.auth import login, get_user_model
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404
 
@@ -30,8 +31,13 @@ class AccountLogout(LogoutView):
     pass
 
 
-class AccountDelete(DeleteView):
+class AccountDelete(UserPassesTestMixin, DeleteView):
     template_name = 'accounts/account-delete.html'
+
+    def test_func(self):
+        user = self.request.user
+        obj = self.get_object()
+        return obj == user or user.is_superuser
 
     def get_object(self, **kwargs):
         return get_object_or_404(User, pk=self.kwargs.get('pk'))

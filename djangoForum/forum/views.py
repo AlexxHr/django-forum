@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 # Create your views here.
 from django.core.exceptions import PermissionDenied
@@ -72,44 +72,35 @@ class ForumThreadView(ListView):
         return context
 
 
-class ForumThreadEdit(UpdateView):
+class ForumThreadEdit(UserPassesTestMixin, UpdateView):
     template_name = 'forum/thread-edit.html'
     form_class = ForumThreadForm
 
-    def dispatch(self, request, *args, **kwargs):
-        handler = super().dispatch(request, *args, **kwargs)
+    def test_func(self):
         user = self.request.user
-        thread = self.get_object()
-        if not (thread.user == user or user.is_superuser):
-            raise PermissionDenied
-        return handler
+        obj = self.get_object()
+        return obj.user == user or user.is_superuser
 
     def get_object(self, **kwargs):
-        slug_ = self.kwargs.get('slug')
-        return get_object_or_404(ForumThread, slug=slug_)
+        return get_object_or_404(ForumThread, slug=self.kwargs.get('slug'))
 
     def get_success_url(self):
         return reverse_lazy('thread posts', kwargs={'slug': self.kwargs['slug']})
 
 
-class ForumThreadDelete(DeleteView):
+class ForumThreadDelete(UserPassesTestMixin, DeleteView):
     template_name = 'forum/thread-delete.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        handler = super().dispatch(request, *args, **kwargs)
-        if not request.POST:
-            user = self.request.user
-            thread = self.get_object()
-            if not (thread.user == user or user.is_superuser):
-                raise PermissionDenied
-        return handler
+    def test_func(self):
+        user = self.request.user
+        obj = self.get_object()
+        return obj.user == user or user.is_superuser
 
     def get_object(self, **kwargs):
-        slug_ = self.kwargs.get('slug')
-        return get_object_or_404(ForumThread, slug=slug_)
+        return get_object_or_404(ForumThread, slug=self.kwargs.get('slug'))
 
     def get_success_url(self):
-        thread = ForumThread.objects.get(slug=self.kwargs['slug'])
+        thread = self.get_object()
         category = ForumCategory.objects.get(slug=thread.category.slug)
         return reverse_lazy('category threads', kwargs={'slug': category.slug})
 
@@ -153,17 +144,14 @@ class ForumPostReply(LoginRequiredMixin, CreateView):
         return reverse_lazy('thread posts', kwargs={'slug': reply_post.thread.slug})
 
 
-class ForumPostEdit(UpdateView):
+class ForumPostEdit(UserPassesTestMixin, UpdateView):
     template_name = 'forum/post-edit.html'
     form_class = ForumPostForm
 
-    def dispatch(self, request, *args, **kwargs):
-        handler = super().dispatch(request, *args, **kwargs)
+    def test_func(self):
         user = self.request.user
-        post = self.get_object()
-        if not (post.user == user or user.is_superuser):
-            raise PermissionDenied
-        return handler
+        obj = self.get_object()
+        return obj.user == user or user.is_superuser
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -179,17 +167,13 @@ class ForumPostEdit(UpdateView):
         return reverse_lazy('thread posts', kwargs={'slug': post.thread.slug})
 
 
-class ForumPostDelete(DeleteView):
+class ForumPostDelete(UserPassesTestMixin, DeleteView):
     template_name = 'forum/post-delete.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        handler = super().dispatch(request, *args, **kwargs)
-        if not request.POST:
-            user = self.request.user
-            post = self.get_object()
-            if not (post.user == user or user.is_superuser):
-                raise PermissionDenied
-        return handler
+    def test_func(self):
+        user = self.request.user
+        obj = self.get_object()
+        return obj.user == user or user.is_superuser
 
     def get_object(self, **kwargs):
         return get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
@@ -204,9 +188,14 @@ class ProfileDetails(DetailView):
     template_name = 'forum/profile-details.html'
 
 
-class ProfileEdit(UpdateView):
+class ProfileEdit(UserPassesTestMixin, UpdateView):
     template_name = 'forum/profile-edit.html'
     form_class = ProfileEditForm
+
+    def test_func(self):
+        user = self.request.user
+        obj = self.get_object()
+        return obj.user == user or user.is_superuser
 
     def get_object(self, **kwargs):
         return get_object_or_404(Profile, pk=self.kwargs.get('pk'))

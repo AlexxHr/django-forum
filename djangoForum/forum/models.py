@@ -34,6 +34,10 @@ class ForumThread(models.Model):
     content = RichTextField(null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
 
+    def get_thread_posts(self):
+        posts = ForumPost.objects.filter(thread_id=self.pk)
+        return posts
+
     def __str__(self):
         return self.title
 
