@@ -172,8 +172,7 @@ class ForumPostEdit(UpdateView):
         return super().form_valid(form)
 
     def get_object(self, **kwargs):
-        pk_ = self.kwargs.get('pk')
-        return get_object_or_404(ForumPost, pk=pk_)
+        return get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
 
     def get_success_url(self):
         post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
@@ -193,8 +192,7 @@ class ForumPostDelete(DeleteView):
         return handler
 
     def get_object(self, **kwargs):
-        pk_ = self.kwargs.get('pk')
-        return get_object_or_404(ForumPost, pk=pk_)
+        return get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
 
     def get_success_url(self):
         post = get_object_or_404(ForumPost, pk=self.kwargs.get('pk'))
@@ -220,6 +218,7 @@ class ProfileEdit(UpdateView):
 class ProfilePosts(ListView):
     template_name = 'forum/profile-posts.html'
     paginate_by = 5
+    context_object_name = 'posts'
 
     def get_queryset(self):
         object_list = ForumPost.objects.filter(user_id=self.kwargs['pk'])

@@ -1,0 +1,55 @@
+{% load static %}
+<div id="{{ post.id }}" class="list-group-item bg-secondary mb-2 text-light">
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column me-3">
+            <a href="{% url 'profile details' post.user.pk %}"><h5>{{ post.user.username }}</h5></a>
+            {% if post.user.profile.image %}
+                <img src="{{ MEDIA_URL }}{{ post.user.profile.image }}"
+                     alt="Generic placeholder image" class="img img-thumbnail mt-4 mb-2"
+                     style="width: 160px; height: 150px; z-index: 1">
+            {% else %}
+                <img src="{% static 'images/Sample_User_Icon.png' %}"
+                     alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                     style="width: 160px; height: 150px; z-index: 1">
+            {% endif %}
+        </div>
+        <div class="d-flex flex-column ms-2" style="width: 1200px;">
+            <div class="d-flex mb-1">
+
+                {% if post.edited %}
+                    <small>(edited)</small>
+                {% endif %}
+                <small class="p-1 me-auto">{{ post.date_posted }}</small>
+                {% if request.user == post.user %}
+                    <a class="ms-2 bg-light btn btn-outline-dark" href="{% url 'post edit' post.id %}">Edit</a>
+                    <a class="ms-2 bg-light btn btn-outline-danger"
+                       href="{% url 'post delete' post.id %}">Delete</a>
+
+                {% endif %}
+                <a class="ms-2 bg-light btn btn-outline-dark"
+                   href="{% url 'post reply' post.id %}">Reply</a>
+            </div>
+            <div class="d-flex flex-column mt-2">
+                {% if post.is_reply and post.is_parent %}
+                    <div class="p-1 text-dark" style="background-color: rgba(250,252,252,0.45)">
+                    </div>
+                    <div class="p-3 mb-2 text-break" style="background-color: rgba(250,252,252,0.15)">
+                        <h5>The replied post has been deleted</h5></div>
+                {% endif %}
+                {% if not post.is_parent %}
+
+                    <div class="p-1 text-dark" style="background-color: rgba(250,252,252,0.45)">
+                        <small>On {{ post.parent.date_posted }} <a
+                                href="{% url 'profile details' post.parent.user.id %}">{{ post.parent.user.username }}</a>
+                            said:</small>
+                    </div>
+                    <div class="p-3 mb-2 text-break"
+                         style="background-color: rgba(250,252,252,0.15)">{{ post.parent }}</div>
+                {% endif %}
+            </div>
+            <div class="text-break ms-5 me-5">
+                {{ post.content|safe }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@
     <div class="container">
         <a href="{% url 'profile details' view.kwargs.pk %}">Back</a>
         <div class="card p-3 bg-dark text-light"><h1>peter's posts:</h1></div>
-    <div class="mt-3">
+        <div class="mt-3">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     {% include 'pagination.html' %}
@@ -12,43 +12,8 @@
             </nav>
         </div>
         <div class="py-3 h-100">
-            {% for post in object_list %}
-                <div class="list-group-item bg-secondary mb-2 text-light">
-                    <div class="d-flex flex-row">
-                        <div class="d-flex flex-column me-3">
-                            <a href="{% url 'profile details' post.user.pk %}">
-                                <h5>{{ post.user.username }}</h5></a>
-                            {% if post.user.profile.image %}
-                                <img src="{{ MEDIA_URL }}{{ post.user.profile.image }}"
-                                     alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                     style="width: 150px; height: 150px; z-index: 1">
-                            {% else %}
-                                <img src="{% static 'images/Sample_User_Icon.png' %}"
-                                     alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                                     style="width: 150px; height: 150px; z-index: 1">
-                            {% endif %}
-                        </div>
-                        <div class="d-flex flex-column flex-grow-1">
-                            <div class="d-flex">
-                                {% if post.edited %}
-                                    <small>(edited)</small>
-                                {% endif %}
-                                <small class="p-1 me-auto">{{ post.date_posted }}</small>
-                                {% if request.user == post.user %}
-                                    <a class="ms-2 bg-light btn btn-outline-dark"
-                                       href="{% url 'post edit' post.id %}">Edit</a>
-                                    <a class="ms-2 bg-light btn btn-outline-danger"
-                                       href="{% url 'post delete' post.id %}">Delete</a>
-                                {% endif %}
-                            </div>
-                            <div class="d=flex flex-grow-1">
-                                <p class="text-break ms-5 me-5">
-                                    {{ post.content|safe }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            {% for post in posts %}
+                {% include 'posts.html' %}
             {% endfor %}
         </div>
     </div>
