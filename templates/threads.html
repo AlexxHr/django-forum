@@ -2,16 +2,16 @@
     <a class="list-group-item list-group-item-action flex-column align-items-start bg-secondary"
        href="{% url 'thread posts' thread.slug %}">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-2">{{ thread.title }}</h5>
+            <h4 class="mb-2">{{ thread.title }}</h4>
             <small>{{ thread.date_posted }}</small>
         </div>
-        <div class="d-flex w-100 justify-content-between">
+        <div class="d-flex">
             {% if thread.content|length > 100 %}
-                <p class="mb-1">{{ thread.content|slice:":100" }}...</p>
+                <p class="mb-1">{{ thread.content|safe|slice:":100" }}...</p>
             {% else %}
-                <p class="mb-1">{{ thread.content|slice:":100" }}</p>
+                <p class="mb-1">{{ thread.content|safe }}</p>
             {% endif %}
-            <small class="">posts:100</small>
+            <small class="ms-auto">posts:100</small>
         </div>
     </a>
 {% endfor %}

@@ -32,9 +32,22 @@ INSTALLED_APPS = [
     'djangoForum.accounts.apps.AccountsConfig',
     'djangoForum.forum.apps.ForumConfig',
 
-    'crispy_forms'
+    'crispy_forms',
+    'ckeditor'
 ]
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+        ],
+        'height': 300,
+        'width': 540,
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

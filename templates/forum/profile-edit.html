@@ -5,6 +5,7 @@
     <div class="form-data">
         <form method="post" enctype="multipart/form-data" action="{% url 'profile edit' object.pk %}">
             <div class="mb-3">
+                {{ form.media }}
                 {{ form|crispy }}
                 {% csrf_token %}
                 <button class="btn btn-dark w-100 mt-2">Edit</button>

@@ -1,9 +1,13 @@
 asgiref==3.5.0
 billiard==3.6.4.0
 certifi==2021.10.8
+decorator==5.1.1
 Django==4.0.3
+django-ckeditor==6.3.0
 django-crispy-forms==1.14.0
+django-js-asset==2.0.0
 h11==0.9.0
+kwargs==1.0.1
 passlib==1.7.4
 Pillow==9.0.1
 psycopg2==2.9.3
@@ -11,9 +15,11 @@ py==1.11.0
 pyasn1==0.4.8
 pycparser==2.21
 pyparsing==3.0.7
+python-decouple==3.6
 pytz==2022.1
 raven==6.10.0
 rsa==4.8
+self==2020.12.3
 six==1.16.0
 sniffio==1.2.0
 sqlparse==0.4.2

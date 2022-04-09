@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from ckeditor.fields import RichTextField
 
 User = get_user_model()
 
@@ -7,7 +8,7 @@ User = get_user_model()
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     image = models.ImageField(blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
+    bio = RichTextField(blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     def get_user_posts(self):
@@ -30,7 +31,7 @@ class ForumThread(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=30, null=True, blank=True)
     title = models.CharField(max_length=30, null=False, blank=False)
-    content = models.TextField(null=False, blank=False)
+    content = RichTextField(null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -43,7 +44,7 @@ class ForumThread(models.Model):
 class ForumPost(models.Model):
     thread = models.ForeignKey(ForumThread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(null=False, blank=False)
+    content = RichTextField(null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
     date_edited = models.DateTimeField(auto_now=True)
