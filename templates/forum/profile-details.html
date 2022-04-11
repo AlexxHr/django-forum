@@ -9,7 +9,7 @@
                         <div class="text-white d-flex flex-row bg-dark" style="height:200px;">
                             <div class="ms-4 mt-5 d-flex flex-column">
                                 {% if object.profile.image %}
-                                    <img src="{{ MEDIA_URL }}{{ object.profile.image }}"
+                                    <img src="{{ object.profile.image.url }}"
                                          alt="Generic placeholder image" class="img img-thumbnail mt-4 mb-2"
                                          style="width: 150px; height: 150px; z-index: 1">
                                 {% else %}
@@ -17,7 +17,6 @@
                                          alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                                          style="width: 150px; height: 150px; z-index: 1">
                                 {% endif %}
-
                             </div>
                             <div class="ms-3" style="margin-top: 130px;">
                                 <h3>{{ object.username }}</h3>
