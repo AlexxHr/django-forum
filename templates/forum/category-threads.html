@@ -13,9 +13,11 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     {% include 'pagination.html' %}
-                    <div class="ms-auto p-1"><a class="page-link text-dark"
+                    {% if user.is_authenticated %}
+                        <div class="ms-auto p-1"><a class="page-link text-dark"
                                                 href="{% url 'thread create' view.kwargs.slug %}">Create new thread</a>
                     </div>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

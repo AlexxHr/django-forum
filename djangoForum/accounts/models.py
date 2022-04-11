@@ -2,8 +2,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
-
-# Create your models here.
 from djangoForum.accounts.managers import ForumUserManager
 
 
@@ -14,7 +12,7 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username',]
+    REQUIRED_FIELDS = ['username', ]
     objects = ForumUserManager()
 
     def __str__(self):

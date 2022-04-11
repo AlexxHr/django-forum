@@ -31,10 +31,12 @@
                         </div>
                         <div class="p-4 text-black" style="background-color: #f8f9fa;">
                             <div class="d-flex justify-content-end text-center py-1">
+                                {% if request.user == object %}
                                 <a href="{% url 'profile edit' object.pk %}" type="button" class="btn btn-outline-dark me-auto mb-2"
                                    data-mdb-ripple-color="dark" style="z-index: 1;">
                                     Edit profile
                                 </a>
+                                {% endif %}
                                 <div>
                                     <p class="mb-1 h5">{{ object.profile.get_user_posts|length }}</p>
                                     <p class="small text-muted mb-0">Posts</p>

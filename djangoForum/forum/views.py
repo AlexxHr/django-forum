@@ -1,14 +1,8 @@
-from datetime import datetime
-
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-# Create your views here.
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -18,6 +12,20 @@ from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost, Prof
 User = get_user_model()
 
 
+def handler403(request, exception):
+    template_name = "403.html"
+    response = render(request, template_name)
+    response.status_code = 403
+    return response
+
+
+def handler404(request, exception):
+    template_name = "404.html"
+    response = render(request, template_name)
+    response.status_code = 404
+    return response
+
+
 class ForumHomeView(ListView):
     template_name = 'forum/home.html'
     model = ForumCategory
@@ -25,7 +33,7 @@ class ForumHomeView(ListView):
 
 class ForumCategoryView(ListView):
     template_name = 'forum/category-threads.html'
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         category = ForumCategory.objects.get(slug=self.kwargs['slug'])
@@ -55,7 +63,7 @@ class ForumThreadCreate(LoginRequiredMixin, CreateView):
 
 class ForumThreadView(ListView):
     template_name = 'forum/thread-posts.html'
-    paginate_by = 5
+    paginate_by = 10
     context_object_name = 'posts'
 
     def get_queryset(self):
@@ -125,11 +133,6 @@ class ForumPostReply(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('account login')
     template_name = 'forum/post-reply.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['reply_post'] = ForumPost.objects.get(pk=self.kwargs['pk'])
-        return context
-
     def form_valid(self, form):
         post = form.save(commit=False)
         reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
@@ -138,6 +141,11 @@ class ForumPostReply(LoginRequiredMixin, CreateView):
         post.user = self.request.user
         post.thread = ForumThread.objects.get(slug=reply_post.thread.slug)
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reply_post'] = ForumPost.objects.get(pk=self.kwargs['pk'])
+        return context
 
     def get_success_url(self):
         reply_post = ForumPost.objects.get(pk=self.kwargs['pk'])
@@ -206,12 +214,17 @@ class ProfileEdit(UserPassesTestMixin, UpdateView):
 
 class ProfilePosts(ListView):
     template_name = 'forum/profile-posts.html'
-    paginate_by = 5
+    paginate_by = 10
     context_object_name = 'posts'
 
     def get_queryset(self):
         object_list = ForumPost.objects.filter(user_id=self.kwargs['pk'])
         return object_list
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['user'] = User.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
 class SearchResults(ListView):

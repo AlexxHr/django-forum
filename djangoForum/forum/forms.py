@@ -1,6 +1,6 @@
 from django import forms
 
-from djangoForum.forum.models import ForumPost, ForumThread, Profile
+from djangoForum.forum.models import ForumPost, ForumThread, Profile, ForumCategory
 
 
 class ForumPostForm(forms.ModelForm):

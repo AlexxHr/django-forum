@@ -1,10 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from django import forms
-
-from djangoForum.forum.models import Profile
-
 
 class AccountRegisterForm(UserCreationForm):
     class Meta:
