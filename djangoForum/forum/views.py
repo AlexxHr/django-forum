@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from djangoForum.forum.forms import ForumPostForm, ForumThreadForm, ProfileEditForm
+from djangoForum.forum.forms import ForumPostForm, ForumThreadForm, ProfileEditForm, ForumCategoryForm
 from djangoForum.forum.models import ForumCategory, ForumThread, ForumPost, Profile
 
 User = get_user_model()

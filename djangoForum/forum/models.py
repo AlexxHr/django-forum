@@ -19,19 +19,26 @@ class Profile(models.Model):
 class ForumCategory(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False)
     slug = models.SlugField(max_length=30, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    description = RichTextField(max_length=100, null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
+
+    def get_all_threads(self):
+        threads = ForumThread.objects.filter(category_id=self.pk)
+        return threads
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['date_posted']
 
 
 class ForumThread(models.Model):
     category = models.ForeignKey(ForumCategory, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=30, null=True, blank=True)
-    title = models.CharField(max_length=30, null=False, blank=False)
-    content = RichTextField(null=False, blank=False)
+    title = models.CharField(max_length=50, null=False, blank=False)
+    content = RichTextField(max_length=1000, null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
 
     def get_thread_posts(self):
@@ -48,7 +55,7 @@ class ForumThread(models.Model):
 class ForumPost(models.Model):
     thread = models.ForeignKey(ForumThread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = RichTextField(null=False, blank=False)
+    content = RichTextField(max_length=1000, null=False, blank=False)
     date_posted = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
     date_edited = models.DateTimeField(auto_now=True)

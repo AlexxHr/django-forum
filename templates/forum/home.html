@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
-        <div class="">
+        <div>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">Home</li>
@@ -9,20 +9,18 @@
             </nav>
         </div>
         <div class="list-group  py-5 h-100">
-            <div class="bg-secondary">
+            <div class="d-flex bg-secondary flex-row">
                 <h3 class="text-light ms-2 mt-1">Discussions</h3>
             </div>
             {% for category in object_list %}
                 <a class="list-group-item list-group-item-action flex-column align-items-start"
                    href="{% url 'category threads' category.slug %}">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-2">{{ category.title }}</h5>
-                        <small>3 days ago</small>
+                        <h4 class="mb-2">{{ category.title }}</h4>
+                        <small class="ms-2">threads: {{ category.get_all_threads|length }}</small>
                     </div>
-                    <div class="d-flex w-100 justify-content-between">
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus
-                            varius blandits</p>
-                        <small class="ms-2">posts:100</small>
+                    <div class="d-flex w-100 justify-content-between text-secondary">
+                        {{ category.description|safe }}
                     </div>
                 </a>
             {% endfor %}

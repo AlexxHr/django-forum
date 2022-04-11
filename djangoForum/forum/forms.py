@@ -3,6 +3,12 @@ from django import forms
 from djangoForum.forum.models import ForumPost, ForumThread, Profile, ForumCategory
 
 
+class ForumCategoryForm(forms.ModelForm):
+    class Meta:
+        model = ForumCategory
+        fields = ('title', 'description',)
+
+
 class ForumPostForm(forms.ModelForm):
     class Meta:
         model = ForumPost
