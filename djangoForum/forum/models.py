@@ -1,13 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from ckeditor.fields import RichTextField
+from cloudinary.models import CloudinaryField
 
 User = get_user_model()
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    image = models.ImageField(blank=True, null=True)
+    image = CloudinaryField('image', null=True, blank=True)
     bio = RichTextField(blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
