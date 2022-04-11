@@ -1,2 +1,2 @@
 web: gunicorn --pythonpath djangoForum djangoForum.wsgi
-release: python petstagram/manage.py migrate
+release: python djangoForum/manage.py migrate
