@@ -16,7 +16,7 @@
                 <div class="d-flex flex-column me-3">
                     <a><h5>{{ thread.user.username }}</h5></a>
                     {% if thread.user.profile.image %}
-                        <img src="{{ MEDIA_URL }}{{ thread.user.profile.image }}"
+                        <img src="{{ thread.user.profile.image.url }}"
                              alt="Generic placeholder image" class="img-thumbnail mt-4 mb-2"
                              style="width: 160px; height: 150px; z-index: 1">
                     {% else %}
