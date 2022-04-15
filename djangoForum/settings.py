@@ -33,7 +33,9 @@ INSTALLED_APPS = [
     'djangoForum.forum.apps.ForumConfig',
 
     'crispy_forms',
-    'ckeditor'
+    'ckeditor',
+    'tz_detect',
+
 ]
 
 CKEDITOR_CONFIGS = {
@@ -42,7 +44,6 @@ CKEDITOR_CONFIGS = {
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
         ],
         'height': 300,
         'width': 540,
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tz_detect.middleware.TimezoneMiddleware'
 ]
 
 ROOT_URLCONF = 'djangoForum.urls'
@@ -77,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
