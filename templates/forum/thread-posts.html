@@ -14,7 +14,7 @@
         <div id="{{ post.id }}" class="list-group-item mb-2 text-light" style="background-color: #44474f;">
             <div class="d-flex flex-row">
                 <div class="d-flex flex-column me-3">
-                    <a><h5>{{ thread.user.username }}</h5></a>
+                    <a class="text-light" href="{% url 'profile details' thread.user.pk %}"><h5>{{ thread.user.username }}</h5></a>
                     {% if thread.user.profile.image %}
                         <img src="{{ thread.user.profile.image.url }}"
                              alt="Generic placeholder image" class="img-thumbnail mt-4 mb-2"

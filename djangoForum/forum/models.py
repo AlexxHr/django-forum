@@ -16,6 +16,9 @@ class Profile(models.Model):
         posts = ForumPost.objects.filter(user_id=self.pk)
         return posts
 
+    def __str__(self):
+        return self.user
+
 
 class ForumCategory(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False)

@@ -4,7 +4,7 @@
     <section class="h-100 gradient-custom-2">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-lg-9 col-xl-10">
+                <div class="col col-lg-9 col-xl-12">
                     <div class="card">
                         <div class="text-white d-flex flex-row bg-dark" style="height:200px;">
                             <div class="ms-4 mt-5 d-flex flex-column">
@@ -20,7 +20,12 @@
                             </div>
                             <div class="ms-3" style="margin-top: 130px;">
                                 <h3>{{ object.username }}</h3>
-                                <p>Member</p>
+                                {% if object.is_staff %}
+                                    <p>Admin</p>
+                                {% else %}
+                                    <p>Member</p>
+                                {% endif %}
+
                             </div>
                             {% if request.user == object %}
                                 <div class="ms-auto me-3" style="margin-top: 15px;"><a
@@ -31,10 +36,11 @@
                         <div class="p-4 text-black" style="background-color: #f8f9fa;">
                             <div class="d-flex justify-content-end text-center py-1">
                                 {% if request.user == object %}
-                                <a href="{% url 'profile edit' object.pk %}" type="button" class="btn btn-outline-dark me-auto mb-2"
-                                   data-mdb-ripple-color="dark" style="z-index: 1;">
-                                    Edit profile
-                                </a>
+                                    <a href="{% url 'profile edit' object.pk %}" type="button"
+                                       class="btn btn-outline-dark me-auto mb-2"
+                                       data-mdb-ripple-color="dark" style="z-index: 1;">
+                                        Edit profile
+                                    </a>
                                 {% endif %}
                                 <div>
                                     <p class="mb-1 h5">{{ object.profile.get_user_posts|length }}</p>
@@ -59,7 +65,8 @@
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <p class="lead fw-normal mb-0">Recent posts</p>
-                                <p class="mb-0"><a href="{% url 'profile posts' object.pk %}" class="text-muted">Show all</a></p>
+                                <p class="mb-0"><a href="{% url 'profile posts' object.pk %}" class="text-muted">Show
+                                    all</a></p>
                             </div>
 
                             {% for post in object.profile.get_user_posts|slice:":5" %}
