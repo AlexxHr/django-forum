@@ -16,6 +16,10 @@ class Profile(models.Model):
         posts = ForumPost.objects.filter(user_id=self.pk)
         return posts
 
+    def get_user_threads(self):
+        threads = ForumThread.objects.filter(user_id=self.pk)
+        return threads
+
     def __str__(self):
         return self.user
 

@@ -227,6 +227,21 @@ class ProfilePosts(ListView):
         return context
 
 
+class ProfileThreads(ListView):
+    template_name = 'forum/profile-threads.html'
+    paginate_by = 10
+    context_object_name = 'threads'
+
+    def get_queryset(self):
+        object_list = ForumThread.objects.filter(user_id=self.kwargs['pk'])
+        return object_list
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['user'] = User.objects.get(pk=self.kwargs['pk'])
+        return context
+
+
 class SearchResults(ListView):
     template_name = 'forum/search-results.html'
     model = ForumThread

@@ -42,8 +42,12 @@
                                         Edit profile
                                     </a>
                                 {% endif %}
+                                <div class="me-2">
+                                    <p class="mb-1 h5"><a href="{% url 'profile threads' object.pk %}" class="text-muted">{{ object.profile.get_user_threads|length }}</a></p>
+                                    <p class="small text-muted mb-0">Threads</p>
+                                </div>
                                 <div>
-                                    <p class="mb-1 h5">{{ object.profile.get_user_posts|length }}</p>
+                                    <p class="mb-1 h5"><a href="{% url 'profile posts' object.pk %}" class="text-muted">{{ object.profile.get_user_posts|length }}</a></p>
                                     <p class="small text-muted mb-0">Posts</p>
                                 </div>
                                 <div class="px-3">
